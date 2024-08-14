@@ -1,0 +1,12 @@
+# Ignorar node_modules globalmente
+node_modules/
+
+# Ignorar carpetas node_modules específicas
+videojuegos-api/node_modules/
+
+# Ignorar archivos de entorno
+.env
+
+# Ignorar archivos de compilación
+dist/
+build/
