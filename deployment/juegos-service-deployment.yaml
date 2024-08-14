@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juegos-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: juegos-service
+  template:
+    metadata:
+      labels:
+        app: juegos-service
+    spec:
+      containers:
+      - name: juegos-service
+        image: dyllgold/juegos-service:v1 
+        ports:
+        - containerPort: 3002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: juegos-service
+spec:
+  selector:
+    app: juegos-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3002
+  type: LoadBalancer

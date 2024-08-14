@@ -4,12 +4,12 @@ const pool = require('../config/db');
 
 // Crear un nuevo juego
 router.post('/', async (req, res) => {
-    const { nombre, clasificacion_edad, fecha_lanzamiento, restriccion_region, precio, categorias, desarrolladores } = req.body;
+    const { nombre, clasificacion_edad, fecha_lanzamiento, restriccion_region, precio, genero, categorias, desarrolladores } = req.body;
 
     try {
         const [result] = await pool.execute(
-            'INSERT INTO Juego (nombre, clasificacion_edad, fecha_lanzamiento, restriccion_region, precio) VALUES (?, ?, ?, ?, ?)',
-            [nombre, clasificacion_edad, fecha_lanzamiento, restriccion_region, precio]
+            'INSERT INTO Juego (nombre, clasificacion_edad, fecha_lanzamiento, restriccion_region, precio, genero) VALUES (?, ?, ?, ?, ?, ?)',
+            [nombre, clasificacion_edad, fecha_lanzamiento, restriccion_region, precio, genero]
         );
         const juegoId = result.insertId;
 
