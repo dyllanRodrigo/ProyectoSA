@@ -8,118 +8,113 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema soa_p
 -- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `soa_p` DEFAULT CHARACTER SET utf8;
+USE `soa_p`;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Table `soa_p`.`Usuario`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE TABLE IF NOT EXISTS `soa_p`.`Usuario` (
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(255) NULL,
+  `apellido` VARCHAR(255) NULL,
+  `nickname` VARCHAR(255) NULL,
+  `correo` VARCHAR(255) NULL,
+  `telefono` VARCHAR(255) NULL,
+  `direccion` VARCHAR(255) NULL,
+  `region` VARCHAR(255) NULL,
+  `rol` VARCHAR(255) NULL,
+  PRIMARY KEY (`idUsuario`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Usuario`
+-- Table `soa_p`.`Juego`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
-  `idUsuario` INT NULL DEFAULT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(255) NULL DEFAULT NULL,
-  `apellido` VARCHAR(255) NULL DEFAULT NULL,
-  `nickname` VARCHAR(255) NULL DEFAULT NULL,
-  `correo` VARCHAR(255) NULL DEFAULT NULL,
-  `telefono` VARCHAR(255) NULL DEFAULT NULL,
-  `direccion` VARCHAR(255) NULL DEFAULT NULL,
-  `region` VARCHAR(255) NULL DEFAULT NULL,
-  `rol` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`idUsuario`));
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Juego`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Juego` (
-  `idJuego` INT NULL DEFAULT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(255) NULL DEFAULT NULL,
-  `clasificacion_edad` VARCHAR(255) NULL DEFAULT NULL,
-  `fecha_lanzamiento` DATE NULL DEFAULT NULL,
-  `restriccion_region` VARCHAR(255) NULL DEFAULT NULL,
-  `precio` DECIMAL NULL DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `soa_p`.`Juego` (
+  `idJuego` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(255) NULL,
+  `clasificacion_edad` VARCHAR(255) NULL,
+  `fecha_lanzamiento` DATE NULL,
+  `restriccion_region` VARCHAR(255) NULL,
+  `precio` DECIMAL(10, 2) NULL,
   `genero` VARCHAR(255) NULL,
-  PRIMARY KEY (`idJuego`));
-
-
--- -----------------------------------------------------
--- Table `mydb`.`Categoria`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Categoria` (
-  `idCategoria` INT NULL DEFAULT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(255) NULL DEFAULT NULL,
-  PRIMARY KEY (`idCategoria`));
-
+  PRIMARY KEY (`idJuego`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `mydb`.`JuegoCategoria`
+-- Table `soa_p`.`Categoria`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`JuegoCategoria` (
+CREATE TABLE IF NOT EXISTS `soa_p`.`Categoria` (
+  `idCategoria` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(255) NULL,
+  PRIMARY KEY (`idCategoria`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `soa_p`.`JuegoCategoria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `soa_p`.`JuegoCategoria` (
   `idJuego` INT NOT NULL,
   `idCategoria` INT NOT NULL,
-  INDEX (`idJuego` ASC) VISIBLE,
-  INDEX (`idCategoria` ASC) VISIBLE,
+  INDEX (`idJuego` ASC),
+  INDEX (`idCategoria` ASC),
   PRIMARY KEY (`idJuego`, `idCategoria`),
-  CONSTRAINT ``
+  CONSTRAINT `fk_JuegoCategoria_Juego`
     FOREIGN KEY (`idJuego`)
-    REFERENCES `mydb`.`Juego` (`idJuego`),
-  CONSTRAINT ``
+    REFERENCES `soa_p`.`Juego` (`idJuego`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_JuegoCategoria_Categoria`
     FOREIGN KEY (`idCategoria`)
-    REFERENCES `mydb`.`Categoria` (`idCategoria`));
-
+    REFERENCES `soa_p`.`Categoria` (`idCategoria`))
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Desarrollador`
+-- Table `soa_p`.`Desarrollador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Desarrollador` (
+CREATE TABLE IF NOT EXISTS `soa_p`.`Desarrollador` (
   `idDesarrollador` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(255) NULL,
   PRIMARY KEY (`idDesarrollador`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `mydb`.`JuegoDesarrollador`
+-- Table `soa_p`.`JuegoDesarrollador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`JuegoDesarrollador` (
+CREATE TABLE IF NOT EXISTS `soa_p`.`JuegoDesarrollador` (
   `Juego_idJuego` INT NOT NULL,
   `Desarrollador_idDesarrollador` INT NOT NULL,
-  INDEX `fk_JuegoCategoria_Juego1_idx` (`Juego_idJuego` ASC) VISIBLE,
+  INDEX `fk_JuegoDesarrollador_Juego1_idx` (`Juego_idJuego` ASC),
   PRIMARY KEY (`Juego_idJuego`, `Desarrollador_idDesarrollador`),
-  CONSTRAINT `fk_JuegoCategoria_Juego1`
+  CONSTRAINT `fk_JuegoDesarrollador_Juego`
     FOREIGN KEY (`Juego_idJuego`)
-    REFERENCES `mydb`.`Juego` (`idJuego`)
+    REFERENCES `soa_p`.`Juego` (`idJuego`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_JuegoCategoria_Desarrollador1`
+  CONSTRAINT `fk_JuegoDesarrollador_Desarrollador`
     FOREIGN KEY (`Desarrollador_idDesarrollador`)
-    REFERENCES `mydb`.`Desarrollador` (`idDesarrollador`)
+    REFERENCES `soa_p`.`Desarrollador` (`idDesarrollador`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `mydb`.`Rating`
+-- Table `soa_p`.`Rating`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Rating` (
-  `idrating` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `soa_p`.`Rating` (
+  `idrating` INT NOT NULL AUTO_INCREMENT,
   `Juego_idJuego` INT NOT NULL,
   `valor` VARCHAR(45) NULL,
   PRIMARY KEY (`idrating`),
-  INDEX `fk_rating_Juego1_idx` (`Juego_idJuego` ASC) VISIBLE,
-  CONSTRAINT `fk_rating_Juego1`
+  INDEX `fk_rating_Juego1_idx` (`Juego_idJuego` ASC),
+  CONSTRAINT `fk_rating_Juego`
     FOREIGN KEY (`Juego_idJuego`)
-    REFERENCES `mydb`.`Juego` (`idJuego`)
+    REFERENCES `soa_p`.`Juego` (`idJuego`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
