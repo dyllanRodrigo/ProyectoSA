@@ -1,5 +1,6 @@
 
 
+docker-compose up --build -d
 
 
 - Contruir imagenes en dockerhub
@@ -31,3 +32,7 @@ FLUSH PRIVILEGES;
 docker exec -it mysql-container bash
 mysql -u root -p
 ```
+
+
+gcloud auth activate-service-account --key-file="C:\Users\DyllanJ.Rodrigo\keyGCP.json"
+

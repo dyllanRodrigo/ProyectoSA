@@ -14,9 +14,9 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  usuarios-service:
-    build: /usuarios-service 
-    container_name: usuarios-service
+  login-service:
+    build: /login-service 
+    container_name: login-service
     ports:
       - "3001:3001"
     networks:
