@@ -1,0 +1,96 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1b2838;
+  margin: 0;
+  padding: 150px;
+}
+
+.register-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 110vh;
+}
+
+.register-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/background.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  z-index: -1;
+}
+
+.container {
+  background-color: rgba(27, 40, 56, 0.95);
+  padding: 35px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 500px; /* Ajustar el tamaño máximo si es necesario */
+  margin: 0 auto;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #c7d5e0;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #3b4a59;
+  border-radius: 5px;
+  background-color: #1b2838;
+  color: #c7d5e0;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #66c0f4;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4a97c9;
+}
+
+.error {
+  color: #d9534f;
+  margin-top: 10px;
+}
+
+.success {
+  color: #5cb85c;
+  margin-top: 10px;
+}
+
+p {
+  text-align: center;
+  color: #c7d5e0;
+}
+
+p a {
+  color: #66c0f4;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,12 @@
+.footer {
+    background-color: #1b2838;
+    padding: 5px;
+    text-align: center;
+    color: #c7d5e0;
+    position: fixed; /* Fijo en la parte inferior */
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Ocupa todo el ancho */
+    z-index: 1000; /* Se asegura de estar por encima de otros elementos */
+  }
+  
