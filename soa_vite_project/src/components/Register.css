@@ -2,7 +2,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #1b2838;
   margin: 0;
-  padding: 150px;
+  padding: 250px;
 }
 
 .register-wrapper {
@@ -32,7 +32,7 @@ body {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   width: 100%;
-  max-width: 500px; /* Ajustar el tamaño máximo si es necesario */
+  max-width: 500px;
   margin: 0 auto;
   box-sizing: border-box;
   z-index: 1;
@@ -44,7 +44,7 @@ h2 {
   color: #c7d5e0;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -52,6 +52,7 @@ input {
   border-radius: 5px;
   background-color: #1b2838;
   color: #c7d5e0;
+  box-sizing: border-box;
 }
 
 button {
@@ -69,6 +70,11 @@ button {
 
 button:hover {
   background-color: #4a97c9;
+}
+
+label {
+  text-align: left;
+  justify-content: center;
 }
 
 .error {

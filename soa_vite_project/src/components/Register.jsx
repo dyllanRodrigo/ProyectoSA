@@ -5,14 +5,21 @@ import { Link } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
+  const [correo, setCorreo] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [region, setRegion] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Definir la lista de regiones
+  const regiones = ['Guatemala', 'Mexico', 'Estados Unidos', 'Canada']; 
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -24,41 +31,58 @@ const Register = () => {
 
     try {
       const encryptedPassword = crypto.SHA256(password).toString();
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, {
-        firstName,
-        lastName,
-        nickname,
-        email,
-        password: encryptedPassword,
+      
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre, 
+          apellido, 
+          nickname, 
+          correo, 
+          telefono, 
+          direccion, 
+          region,
+          password: encryptedPassword,
+        }),
       });
-      setSuccess('Registration successful! Redirecting to login...');
-      setTimeout(() => window.location.href = '/', 2000);
+      const data = await response.json();
+      if (data.status == "OK") {
+        setSuccess(data.me);
+        setTimeout(() => window.location.href = '/', 2000);
+      } else {
+        throw new Error('Registración fallida, intente de nuevo.');
+      }
     } catch (error) {
-      setError('Registration failed. Please try again.');
+      setError('Registración fallida, intente de nuevo.');
+      console.log({error});
     }
   };
+    
 
   return (
     <div className="register-wrapper">
       <div className="register-background"></div>
       <div className="container">
-        <h2>Register</h2>
+        <h2>CREAR TU CUENTA</h2>
         <form onSubmit={handleRegister}>
           <div>
-            <label>First Name:</label>
+            <label>Nombre:</label>
             <input
               type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
               required
             />
           </div>
           <div>
-            <label>Last Name:</label>
+            <label>Apellido:</label>
             <input
               type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
               required
             />
           </div>
@@ -75,10 +99,43 @@ const Register = () => {
             <label>Email:</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
               required
             />
+          </div>
+          <div>
+            <label>Telefono:</label>
+            <input
+              type="phone"
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Dirección:</label>
+            <input
+              type="Address"
+              value={direccion}
+              onChange={(e) => setDireccion(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Region:</label>
+            <select
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              required
+            >
+              <option value="" disabled>Selecciona una región</option>
+              {regiones.map((reg, index) => (
+                <option key={index} value={reg}>
+                  {reg}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label>Password:</label>

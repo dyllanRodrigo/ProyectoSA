@@ -52,3 +52,36 @@
     text-decoration: none;
   }
   
+  .user-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-nickname {
+    color: #c7d5e0;
+    margin-right: 20px;
+  }
+  
+  .navbar-logout {
+    background-color: #ff0000;
+    border: none;
+    margin-top: 0px;
+    padding: 8px 16px;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .navbar-logout:hover {
+    background-color: #d12727b2;
+  }
+  
+  .user-actions a {
+    margin-left: 20px;
+    color: #c7d5e0;
+    text-decoration: none;
+  }
+  
+  .user-actions a:hover {
+    text-decoration: underline;
+  }

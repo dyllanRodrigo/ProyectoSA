@@ -35,18 +35,18 @@ router.post('/', async (req, res) => {
                     if (error) {
                         console.error(error);
                         connection.release();
-                        return res.status(500).json({ message: 'Error enviando el correo' });
+                        return res.status(500).json({ message: 'Error enviando el correo',status: "Error" });
                     }
                     connection.release();
-                    res.status(200).json({ message: 'Registro exitoso, por favor verifica tu correo para acceder a la plataforma.' });
+                    res.status(200).json({ message: 'Registro exitoso, por favor verifica tu correo para acceder a la plataforma.' ,status: "OK"});
                 });
 
 
                 connection.release();
-                return res.status(400).json({ message: 'Correo de confirmacion enviado de nuevo!.' });
+                return res.status(400).json({ message: 'Correo de confirmacion enviado de nuevo!.' ,status: "OK"});
             }
             connection.release();
-            return res.status(400).json({ message: 'Correo ya registrado' });
+            return res.status(400).json({ message: 'Correo ya registrado', status: "OK" });
         }
 
         // Encriptar la contraseña para mayor seguridad
@@ -77,12 +77,12 @@ router.post('/', async (req, res) => {
                 return res.status(500).json({ message: 'Error enviando el correo' });
             }
             connection.release();
-            res.status(200).json({ message: 'Registro exitoso, por favor verifica tu correo para acceder a la plataforma.' });
+            res.status(200).json({ message: 'Registro exitoso, por favor verifica tu correo para acceder a la plataforma.' ,status: "OK"});
         });
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error en el registro de usuario' });
+        res.status(500).json({ message: 'Error en el registro de usuario',status: "Error" });
     }
 });
 
