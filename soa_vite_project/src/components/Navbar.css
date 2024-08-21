@@ -1,0 +1,87 @@
+.navbar {
+    background-color: #1b2838;
+    padding: 15px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #c7d5e0;
+    position: fixed; /* Fijo en la parte superior */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ocupa todo el ancho */
+    z-index: 1000; /* Se asegura de estar por encima de otros elementos */
+    position: fixed;
+  }
+  
+  .navbar .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .navbar .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .navbar .nav-links a {
+    text-decoration: none;
+    color: #c7d5e0;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar .nav-links a:hover {
+    color: #66c0f4;
+  }
+  
+
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .navbar li {
+    margin: 0px 15px;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .user-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-nickname {
+    color: #c7d5e0;
+    margin-right: 20px;
+  }
+  
+  .navbar-logout {
+    background-color: #ff0000;
+    border: none;
+    margin-top: 0px;
+    padding: 8px 16px;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .navbar-logout:hover {
+    background-color: #d12727b2;
+  }
+  
+  .user-actions a {
+    margin-left: 20px;
+    color: #c7d5e0;
+    text-decoration: none;
+  }
+  
+  .user-actions a:hover {
+    text-decoration: underline;
+  }
