@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: login-service
-        image: charlyv59/login-service:v4
+        image: charlyv59/login-service:v5
         ports:
         - containerPort: 3003
 ---
