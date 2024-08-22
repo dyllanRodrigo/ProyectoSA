@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
+// Habilitar CORS para todas las solicitudes
+app.use(cors());
 app.use(bodyParser.json());
 
 // Importa las rutas de juegos, categorías, desarrolladores, ratings

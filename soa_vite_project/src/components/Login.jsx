@@ -53,7 +53,7 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('nickname', data.nickname);
 
-      //console.log(data);
+      console.log(data.rol);
 
       //Verificamos si es usuario o admin
       if(data.rol == "Admin"){
@@ -63,6 +63,7 @@ const Login = () => {
           text: `Inicio exitoso!`,
         });
         setTimeout(() => window.location.href = '/dashboardAdmin', 3000);
+        return;
       }
 
       Swal.fire({
@@ -87,20 +88,13 @@ const Login = () => {
     try {
       const encryptedPassword = crypto.SHA256(password).toString();
       
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/register`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/confirm`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nombre, 
-          apellido, 
-          nickname, 
-          correo, 
-          telefono, 
-          direccion, 
-          region,
-          password: encryptedPassword,
+          correo
         }),
       });
       const data = await response.json();

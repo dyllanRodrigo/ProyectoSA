@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import SidebarMenu from './SidebarMenu';
 import UserTable from './UserTable';
+import GamesTable from './GamesTable';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -14,8 +15,7 @@ const AdminDashboard = () => {
         <SidebarMenu selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
         <div className="dashboard-main">
           {selectedMenu === 'users' && <UserTable />}
-          {selectedMenu === 'reports' && <div>Reports Section (Placeholder)</div>}
-          {selectedMenu === 'settings' && <div>Settings Section (Placeholder)</div>}
+          {selectedMenu === 'reports' && <GamesTable />}
         </div>
       </div>
     </div>

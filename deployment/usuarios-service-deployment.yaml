@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: usuarios-service
-        image: dyllgold/usuarios-service:v1 
+        image: charlyv59/usuarios-service:v1 
         ports:
         - containerPort: 3001
 ---
