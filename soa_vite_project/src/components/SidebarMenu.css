@@ -1,0 +1,27 @@
+.sidebar-menu {
+    width: 200px;
+    background-color: #1b2838;
+    padding: 20px;
+    color: #c7d5e0;
+  }
+  
+  .menu-item {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #66c0f4;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .menu-item.active {
+    background-color: #4a97c9;
+  }
+  
+  .menu-item:hover {
+    background-color: #3a78a3;
+  }
+  

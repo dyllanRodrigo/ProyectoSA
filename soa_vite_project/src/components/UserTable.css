@@ -1,0 +1,35 @@
+.user-table {
+    width: 100%;
+    background-color: #2a2f32;
+    color: #c7d5e0;
+    padding: 20px;
+  }
+  
+  .user-table h2 {
+    margin-bottom: 20px;
+  }
+  
+  .user-table table {
+    width: 50%;
+    border-collapse: collapse;
+  }
+  
+  .user-table th, .user-table td {
+    padding: 2px;
+    border: 1px solid #3a3f44;
+    text-align: center;
+  }
+  
+  .user-table .delete-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .user-table .delete-button:hover {
+    background-color: #c9302c;
+  }
+  

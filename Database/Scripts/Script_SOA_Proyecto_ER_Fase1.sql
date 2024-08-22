@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `soa_p`.`Juego` (
   `restriccion_region` VARCHAR(255) NULL DEFAULT NULL,
   `precio` DECIMAL(10,2) NULL DEFAULT NULL,
   `genero` VARCHAR(255) NULL,
+  `descuento` INT NULL DEFAULT 0,
   PRIMARY KEY (`idJuego`))
 ENGINE = InnoDB;
 

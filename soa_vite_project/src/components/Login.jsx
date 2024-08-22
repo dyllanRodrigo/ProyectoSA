@@ -10,6 +10,13 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [region, setRegion] = useState('');
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -17,34 +24,46 @@ const Login = () => {
       // Cifrar la contraseña
       const encryptedPassword = crypto.SHA256(password).toString();
 
-      // Enviar la petición al backend
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, {
-        correo,
-        password: encryptedPassword,
+      
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          correo,
+          password: encryptedPassword,
+        }),
       });
-
+      
+      const data = await response.json();
       //Verificamos si esta confirmado el email
-      if(!(response.data.isConfirmed == 1)){
+      if((data.message == "Por favor confirma tu cuenta") || (data.message ==  'Contraseña incorrecta' ) || (data.message ==  'Usuario no encontrado' ) ){
         Swal.fire({
           icon: 'error',
-          title: 'Falta confirmacion de correo.',
-          text: `Por favor vuelva a confirmar su correo electronico.`,
+          title: 'Verificar!',
+          text: data.message ,
         });
-        setTimeout(() => window.location.href = '/', 3000);
+        return;
       }
 
+     
+
       // Guardar el token JWT en localStorage
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('nickname', response.data.nickname);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('nickname', data.nickname);
+
+      console.log(data.rol);
 
       //Verificamos si es usuario o admin
-      if(response.data.rol == "Admin"){
+      if(data.rol == "Admin"){
         Swal.fire({
           icon: 'success',
           title: 'OK',
           text: `Inicio exitoso!`,
         });
         setTimeout(() => window.location.href = '/dashboardAdmin', 3000);
+        return;
       }
 
       Swal.fire({
@@ -55,12 +74,41 @@ const Login = () => {
       // Redirigir a dashboard de usuario
       setTimeout(() => window.location.href = '/dashboard', 3000);
     } catch (error) {
-      setError('Credenciales incorrectas, intente de nuevo.');
+      setError('Error al iniciar sesion, ', error);
     }
   };
 
   const handleRegister = () => {
     window.location.href = '/register'; // Reemplaza con la URL adecuada para el registro
+  };
+
+  const handleResend= async (e)  => {
+    e.preventDefault();
+
+    try {
+      const encryptedPassword = crypto.SHA256(password).toString();
+      
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/confirm`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          correo
+        }),
+      });
+      const data = await response.json();
+      if(!(data.message == "")){
+        Swal.fire({
+          icon: 'success',
+          title: 'Verificar!',
+          text: data.message ,
+        });
+      } 
+    } catch (error) {
+      setError('Error al enviar el correo, verificar la información.');
+      console.log({error});
+    }
   };
 
   return  (
@@ -92,6 +140,9 @@ const Login = () => {
             <button type="submit">Login</button>
             <button type="button" onClick={handleRegister} className="register-btn">
               Registro
+            </button>
+            <button type="button" onClick={handleResend} className="resend-code-button">
+              Reenviar codigo email
             </button>
           </div>
         </form>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Make sure axios is imported
+import Swal from 'sweetalert2'
 import './RegisterForm.css'; // Import your CSS file
 
 const RegisterForm = () => {

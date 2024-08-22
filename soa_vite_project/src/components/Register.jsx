@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import crypto from 'crypto-js';
+import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom';
 import './Register.css';
 
@@ -50,8 +51,13 @@ const Register = () => {
       });
       const data = await response.json();
       if (data.status == "OK") {
-        setSuccess(data.me);
-        setTimeout(() => window.location.href = '/', 2000);
+        setSuccess(data.message);
+        Swal.fire({
+          icon: 'success',
+          title: 'OK',
+          text: data.message,
+        });
+        setTimeout(() => window.location.href = '/', 4000);
       } else {
         throw new Error('Registración fallida, intente de nuevo.');
       }

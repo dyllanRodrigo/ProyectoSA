@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: juegos-service
-        image: dyllgold/juegos-service:v1 
+        image: charlyv59/juegos-service:v1 
         ports:
         - containerPort: 3002
 ---
