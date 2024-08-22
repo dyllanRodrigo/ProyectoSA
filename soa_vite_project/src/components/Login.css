@@ -65,27 +65,30 @@ body {
     gap: 10px; /* Añade espacio entre los botones */
   }
   
-  button {
+  button ,.resend-code-button{
     flex: 1;
     padding: 10px;
     margin-top: 20px;
     border: none;
     border-radius: 5px;
     background-color: #66c0f4;
-    color: #fff;
+    color: #ffffff;
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
-  button:hover {
-    background-color: #4a97c9;
+  button:hover ,.resend-code-button {
+    background-color: #0692e9;
+    color: #ffffff
   }
   
-  .register-btn {
-    background-color: #4a97c9; /* Color diferente para el botón de registro */
+  .register-btn  {
+    background-color: hsl(145, 80%, 42%); /* Color diferente para el botón de registro */
   }
-  
-  .register-btn:hover {
-    background-color: #3778a5;
+  .resend-code-button{
+    background-color: hsl(32, 80%, 42%); /* Color diferente para el botón de registro */
+  }
+  .register-btn:hover  {
+    background-color: #222222;
   }
