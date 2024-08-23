@@ -1,6 +1,7 @@
 
 
 docker-compose up --build -d
+docker-compose up -d
 
 
 - Contruir imagenes en dockerhub
