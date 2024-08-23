@@ -86,8 +86,6 @@ const NewGameForm = () => {
   };
 
   return (
-
-
       <div className="container">
         <h2>REGISTRAR JUEGO</h2>
         <form onSubmit={handleRegister}>

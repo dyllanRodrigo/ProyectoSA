@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AdminDashboard from './components/AdminDashboard';
 import Welcome from './components/HomePage';
+import Store from './components/Store';
 import './App.css'; 
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/store" element={<Store />} />
             {rol === 'Admin' && (
               <Route path="/dashboardAdmin" element={<AdminDashboard />} />
             )}
