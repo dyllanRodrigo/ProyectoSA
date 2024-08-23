@@ -10,8 +10,8 @@ const SidebarMenu = ({ selectedMenu, setSelectedMenu }) => {
       <button className={`menu-item ${selectedMenu === 'reports' ? 'active' : ''}`} onClick={() => setSelectedMenu('reports')}>
         Descuentos
       </button>
-      <button className={`menu-item ${selectedMenu === 'settings' ? 'active' : ''}`} onClick={() => setSelectedMenu('settings')}>
-        Settings
+      <button className={`menu-item ${selectedMenu === 'newgame' ? 'active' : ''}`} onClick={() => setSelectedMenu('newgame')}>
+        Registrar juego
       </button>
     </div>
   );
