@@ -166,7 +166,7 @@ const Register = () => {
           <button type="submit">Register</button>
         </form>
         <p>
-          Already have an account? <Link to="/">Login</Link>
+          Ya tienes una cuenta creada? <Link to="/">Iniciar sesión</Link>
         </p>
       </div>
     </div>

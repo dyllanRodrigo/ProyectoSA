@@ -48,10 +48,11 @@ const Login = () => {
       }
 
      
+  // Guardar el token JWT y el rol en localStorage
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('nickname', data.nickname);
+    localStorage.setItem('rol', data.rol); // para manejo de navbar diferentes
 
-      // Guardar el token JWT en localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('nickname', data.nickname);
 
       console.log(data.rol);
 
