@@ -8,7 +8,7 @@
     padding: 20px;
     border-right: 1px solid #ddd;
     margin-right: 20px;
-    background-color: hwb(233 8% 89% / 0.507);
+    background-color: rgba(0, 0, 0, 0.788);
   }
   
   .filter-section {
@@ -31,17 +31,45 @@
   }
   
   .card {
-    background-color: #182535;
+    background-image: url('/public/cardBackground1.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 20px;
     width: 200px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    position: relative; 
+    overflow: hidden; 
+  }
+  
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 0;
   }
   
   .card h3 {
-    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    color: white; 
+    margin-bottom: 10px; 
+    text-align: center; 
+  }
+  
+  .card p {
+    position: relative;
+    z-index: 1;
+    color: white; 
+    margin-bottom: 10px; 
+    text-align: left; 
   }
   
   .pagination {
