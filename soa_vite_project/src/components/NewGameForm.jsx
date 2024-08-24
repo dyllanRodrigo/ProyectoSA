@@ -86,8 +86,6 @@ const NewGameForm = () => {
   };
 
   return (
-    <div className="register-wrapper">
-      <div className="register-background"></div>
       <div className="container">
         <h2>REGISTRAR JUEGO</h2>
         <form onSubmit={handleRegister}>
@@ -134,7 +132,7 @@ const NewGameForm = () => {
               <option value="" disabled>Selecciona la restricción de región</option>
               <option value="Ninguna">Ninguna</option>
               <option value="NA">NA (North America)</option>
-              <option value="NA">LATAM (Latinoamerica)</option>
+              <option value="LATAM">LATAM (Latinoamerica)</option>
               <option value="EU">EU (Europe)</option>
               <option value="JP">JP (Japan)</option>
             </select>
@@ -186,7 +184,6 @@ const NewGameForm = () => {
           <button type="submit">Registrar Juego</button>
         </form>
       </div>
-    </div>
   );
 };
 

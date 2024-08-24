@@ -14,15 +14,15 @@
   }
   
   .navbar .logo {
-    font-size: 1.5em;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
   }
   
-  .navbar .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 10px;
+  .navbar-logo {
+    height: 40px; /* Ajusta el tamaño del SVG según sea necesario */
+    width: auto;
   }
+  
   
   .navbar .nav-links a {
     text-decoration: none;

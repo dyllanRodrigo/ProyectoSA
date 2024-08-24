@@ -19,8 +19,12 @@ const GamesTable = () => {
         }
       });
       const data = await response.json();
-      if (regionFilter) {
-        setGames(data.filter(game => game.restriccion_region === regionFilter));
+  
+      // Asegúrate de que el filtro de región sea insensible al caso y busque coincidencias parciales
+      if (regionFilter.trim()) {
+        setGames(data.filter(game => 
+          game.restriccion_region.toLowerCase().includes(regionFilter.trim().toLowerCase())
+        ));
       } else {
         setGames(data);
       }
@@ -28,6 +32,8 @@ const GamesTable = () => {
       console.error('Error fetching games:', error);
     }
   };
+  
+  
 
   const handleDiscountChange = (idJuego, value) => {
     setUpdatedDiscounts(prevState => ({
@@ -90,10 +96,10 @@ const GamesTable = () => {
             <th>Fecha lanzamiento</th>
             <th>Región</th>
             <th>Precio</th>
-            <th>Genero</th>
+            <th>Categorias</th>
             <th>Descuento actual</th>
-            <th>Actualizar descuento</th>
-            <th>Ejecutar</th>
+            <th>Descuento</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -104,11 +110,11 @@ const GamesTable = () => {
               <td>{game.clasificacion_edad}</td>
               <td>{new Date(game.fecha_lanzamiento).toLocaleDateString()}</td>
               <td>{game.restriccion_region}</td>
-              <td>{game.precio}</td>
-              <td>{game.genero}</td>
+              <td>{"$" + game.precio}</td>
+              <td>{game.categorias.join(', ')}</td> {/* Mostrar categorías separadas por comas */}
               <td>{game.descuento}%</td>
               <td>
-              <input
+                <input
                   type="number"
                   value={updatedDiscounts[game.idJuego] || ''}
                   onChange={(e) => handleDiscountChange(game.idJuego, e.target.value)}
@@ -116,7 +122,7 @@ const GamesTable = () => {
                 />
               </td>
               <td>
-              <button onClick={() => handleUpdateDiscount(game.idJuego, game.restriccion_region)}>
+                <button onClick={() => handleUpdateDiscount(game.idJuego, game.restriccion_region)}>
                   Actualizar descuento
                 </button>
               </td>

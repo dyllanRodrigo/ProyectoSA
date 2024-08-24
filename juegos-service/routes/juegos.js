@@ -30,11 +30,34 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Obtener todos los juegos
+// Obtener todos los juegos con sus categorías y desarrolladores asociados
 router.get('/', async (req, res) => {
     try {
-        const [rows] = await pool.execute('SELECT * FROM Juego');
-        res.status(200).json(rows);
+        const [juegos] = await pool.execute('SELECT * FROM Juego');
+
+        const juegosConDetalles = await Promise.all(juegos.map(async (juego) => {
+            const [categorias] = await pool.execute(
+                'SELECT c.idCategoria, c.nombre FROM Categoria c ' +
+                'JOIN JuegoCategoria jc ON c.idCategoria = jc.idCategoria ' +
+                'WHERE jc.idJuego = ?',
+                [juego.idJuego]
+            );
+
+            const [desarrolladores] = await pool.execute(
+                'SELECT d.idDesarrollador, d.nombre FROM Desarrollador d ' +
+                'JOIN JuegoDesarrollador jd ON d.idDesarrollador = jd.Desarrollador_idDesarrollador ' +
+                'WHERE jd.Juego_idJuego = ?',
+                [juego.idJuego]
+            );
+
+            return {
+                ...juego,
+                categorias: categorias.map(c => c.nombre),  // Devolver solo los nombres de las categorías
+                desarrolladores: desarrolladores.map(d => d.nombre)  // Devolver solo los nombres de los desarrolladores
+            };
+        }));
+
+        res.status(200).json(juegosConDetalles);
     } catch (error) {
         console.error('Error al obtener los juegos:', error);
         res.status(400).json({ message: 'Error al obtener los juegos', error });
