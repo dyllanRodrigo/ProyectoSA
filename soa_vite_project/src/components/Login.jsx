@@ -116,6 +116,7 @@ const Login = () => {
     <div className="login-wrapper">
       <div className="login-background"></div>
       <div className="container">
+      <img src="../public/logo_steam.svg" alt="Logo" className="navbar-logo" />
         <h2>Inicio de sesión</h2>
         <form onSubmit={handleLogin}>
           <div>

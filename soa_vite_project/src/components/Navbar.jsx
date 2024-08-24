@@ -24,7 +24,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="logo"><Link to="/">NotSteam</Link></div>
+      <div className="logo">  <Link to="/">
+          <img src="../public/logo_steam.svg" alt="Logo" className="navbar-logo" />
+        </Link></div>
       <div>
         <ul className="nav-links">
           <li><Link to="/">Home</Link></li>
