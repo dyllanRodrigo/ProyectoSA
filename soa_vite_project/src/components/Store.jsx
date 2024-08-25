@@ -6,6 +6,7 @@ const Store = () => {
   const [juegosFiltrados, setJuegosFiltrados] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [desarrolladores, setDesarrolladores] = useState([]);
+  const [categoriasInteres, setCategoriasInteres] = useState([]);
   const [filtro, setFiltro] = useState({
     masVendidos: false,
     desarrollador: '',
@@ -13,7 +14,8 @@ const Store = () => {
     calificaciones: '',
     clasificacion: '',
     categoria: '',
-    desarrolladorSeleccionado: ''
+    desarrolladorSeleccionado: '',
+    ratingMinimo: '' // Nuevo filtro para el rating mínimo
   });
   const [currentPage, setCurrentPage] = useState(1);
   const juegosPorPagina = 4;
@@ -53,9 +55,22 @@ const Store = () => {
       }
     };
 
+    const fetchCategoriasInteres = async () => {
+      try {
+        const userId = localStorage.getItem('loggedUserId'); // Suponiendo que el ID de usuario está almacenado en localStorage
+        const response = await fetch(`http://localhost:3002/api/categorias/intereses/${userId}`);
+        const data = await response.json();
+        console.log("Categorías de Interés recibidas:", data.CategoriasIntereses);
+        setCategoriasInteres(data.CategoriasIntereses);
+      } catch (error) {
+        console.error('Error al cargar las categorías de interés:', error);
+      }
+    };
+
     fetchJuegos();
     fetchCategorias();
     fetchDesarrolladores();
+    fetchCategoriasInteres();
   }, []);
 
   useEffect(() => {
@@ -66,50 +81,50 @@ const Store = () => {
     let juegosFiltrados = [...juegos];
 
     if (filtro.masVendidos) {
-        juegosFiltrados.sort((a, b) => b.descargas - a.descargas);
+      juegosFiltrados.sort((a, b) => b.descargas - a.descargas);
     }
 
     if (filtro.desarrolladorSeleccionado) {
-        // Encuentra el nombre del desarrollador basado en el ID seleccionado
-        const desarrolladorSeleccionadoNombre = desarrolladores.find(dev => dev.idDesarrollador === parseInt(filtro.desarrolladorSeleccionado))?.nombre;
-        console.log("Aplicando filtro de desarrollador con ID:", filtro.desarrolladorSeleccionado);
-        juegosFiltrados = juegosFiltrados.filter(juego => 
-            juego.desarrolladores && 
-            juego.desarrolladores.some(d => {
-                console.log("Comparando con desarrollador nombre:", d);
-                return d === desarrolladorSeleccionadoNombre;
-            })
-        );
+      const desarrolladorSeleccionadoNombre = desarrolladores.find(dev => dev.idDesarrollador === parseInt(filtro.desarrolladorSeleccionado))?.nombre;
+      juegosFiltrados = juegosFiltrados.filter(juego => 
+        juego.desarrolladores && 
+        juego.desarrolladores.some(d => d === desarrolladorSeleccionadoNombre)
+      );
     }
 
     if (filtro.categoria) {
-        // Encuentra el nombre de la categoría basado en el ID seleccionado
-        const categoriaSeleccionadaNombre = categorias.find(cat => cat.idCategoria === parseInt(filtro.categoria))?.nombre;
-        console.log("Aplicando filtro de categoría con nombre:", categoriaSeleccionadaNombre);
-        juegosFiltrados = juegosFiltrados.filter(juego => 
-            juego.categorias && 
-            juego.categorias.some(c => {
-                console.log("Comparando con categoría nombre:", c);
-                return c === categoriaSeleccionadaNombre;
-            })
-        );
+      const categoriaSeleccionadaNombre = categorias.find(cat => cat.idCategoria === parseInt(filtro.categoria))?.nombre;
+      juegosFiltrados = juegosFiltrados.filter(juego => 
+        juego.categorias && 
+        juego.categorias.some(c => c === categoriaSeleccionadaNombre)
+      );
     }
 
     if (filtro.recomendaciones) {
-        juegosFiltrados = juegosFiltrados.filter(juego => juego.recomendado);
+      juegosFiltrados = juegosFiltrados.filter(juego => 
+        juego.categorias && 
+        juego.categorias.some(c => categoriasInteres.includes(c))
+      );
     }
 
     if (filtro.calificaciones) {
-        juegosFiltrados = juegosFiltrados.filter(juego => juego.calificaciones === filtro.calificaciones);
+      juegosFiltrados = juegosFiltrados.filter(juego => juego.calificaciones === filtro.calificaciones);
     }
 
     if (filtro.clasificacion) {
-        juegosFiltrados = juegosFiltrados.filter(juego => juego.clasificacion_edad === filtro.clasificacion);
+      juegosFiltrados = juegosFiltrados.filter(juego => juego.clasificacion_edad === filtro.clasificacion);
+    }
+
+    if (filtro.ratingMinimo) {
+      juegosFiltrados = juegosFiltrados.filter(juego => {
+        const rating = juego.averageRating ? parseFloat(juego.averageRating) : 0;
+        return rating >= parseInt(filtro.ratingMinimo);
+      });
     }
 
     setJuegosFiltrados(juegosFiltrados);
     setCurrentPage(1); // Reiniciar la paginación al aplicar filtros
-};
+  };
 
 
   const handleFiltroChange = (e) => {
@@ -119,6 +134,21 @@ const Store = () => {
       [name]: type === 'checkbox' ? checked : value
     }));
   };
+
+  const StarRating = ({ rating }) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <div className="star-rating">
+        {Array(fullStars).fill(<span className="star full">★</span>)}
+        {halfStar && <span className="star half">★</span>}
+        {Array(emptyStars).fill(<span className="star empty">☆</span>)}
+      </div>
+    );
+  };
+
 
   const indexOfLastJuego = currentPage * juegosPorPagina;
   const indexOfFirstJuego = indexOfLastJuego - juegosPorPagina;
@@ -201,14 +231,14 @@ const Store = () => {
           </label>
         </div>
         <div className="filter-section">
-          <label>Calificaciones:</label>
-          <select name="calificaciones" value={filtro.calificaciones} onChange={handleFiltroChange}>
-            <option value="">Todas</option>
-            <option value="5">5 Estrellas</option>
-            <option value="4">4 Estrellas</option>
-            <option value="3">3 Estrellas</option>
-            <option value="2">2 Estrellas</option>
-            <option value="1">1 Estrella</option>
+          <label>Rating:</label>
+          <select name="ratingMinimo" value={filtro.ratingMinimo} onChange={handleFiltroChange}>
+            <option value="">Sin filtro</option>
+            <option value="1">1 estrella y más</option>
+            <option value="2">2 estrellas y más</option>
+            <option value="3">3 estrellas y más</option>
+            <option value="4">4 estrellas y más</option>
+            <option value="5">5 estrellas</option>
           </select>
         </div>
         <div className="filter-section">
@@ -225,18 +255,20 @@ const Store = () => {
       <div className="game-list">
         <h2>Juegos Disponibles</h2>
         <div className="card-container">
-            {juegosActuales.map(juego => (
-                <div key={juego.idJuego} className="card">
-                <h3>{juego.nombre}</h3>
-                <p>Desarrolladores: {(juego.desarrolladores || []).join(', ')}</p>
-                <p>Categorías: {(juego.categorias || []).join(', ')}</p>
-                <p>Clasificación: {juego.clasificacion_edad}</p>
-                <p>Calificaciones: {juego.calificaciones} Estrellas</p>
-                <p>Precio: ${juego.precio}</p>
-                <p>Descargas: {juego.descargas} veces</p>
-                </div>
-            ))}
+          {juegosActuales.map(juego => (
+            <div key={juego.idJuego} className="card">
+              <h3>{juego.nombre}</h3>
+              <p>Desarrolladores: {(juego.desarrolladores || []).join(', ')}</p>
+              <p>Categorías: {(juego.categorias || []).join(', ')}</p>
+              <p>Clasificación: {juego.clasificacion_edad}</p>
+              <div>
+                <StarRating rating={juego.averageRating || 0} />({juego.averageRating ? `${juego.averageRating} estrellas` : "Sin rating"})
+              </div>
+              <p>Precio: ${juego.precio}</p>
+              <p>Descargas: {juego.descargas} veces</p>
             </div>
+          ))}
+        </div>
 
         <div className="pagination">
           {renderPaginas()}

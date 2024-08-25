@@ -35,7 +35,8 @@ router.post('/', async (req, res) => {
         const token = jwt.sign({ id: user[0].idUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         connection.release();
-        res.status(200).json({ rol: user[0].rol,token:token ,isConfirmed: user[0].isConfirmed,nickname: user[0].nickname});
+        //se agrega el id para saber id de user logueado
+        res.status(200).json({ idUsuario: user[0].idUsuario, rol: user[0].rol,token:token ,isConfirmed: user[0].isConfirmed,nickname: user[0].nickname});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error en el login' });
