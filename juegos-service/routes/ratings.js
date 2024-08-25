@@ -4,12 +4,12 @@ const pool = require('../config/db');
 
 // Crear un nuevo rating para un juego
 router.post('/', async (req, res) => {
-    const { Juego_idJuego, valor } = req.body;
+    const { Juego_idJuego, Usuario_idUsuario, valor, comentario } = req.body;
 
     try {
         const [result] = await pool.execute(
-            'INSERT INTO Rating (Juego_idJuego, valor) VALUES (?, ?)',
-            [Juego_idJuego, valor]
+            'INSERT INTO Rating (Juego_idJuego, Usuario_idUsuario, valor, comentario) VALUES (?, ?, ?, ?)',
+            [Juego_idJuego, Usuario_idUsuario, valor, comentario]
         );
 
         res.status(201).json({ message: 'Rating creado exitosamente', ratingId: result.insertId });
@@ -25,7 +25,10 @@ router.get('/juego/:juegoId', async (req, res) => {
 
     try {
         const [rows] = await pool.execute(
-            'SELECT * FROM Rating WHERE Juego_idJuego = ?',
+            `SELECT r.idrating, r.valor, r.comentario, u.nombre AS usuario 
+             FROM Rating r 
+             JOIN Usuario u ON r.Usuario_idUsuario = u.idUsuario 
+             WHERE r.Juego_idJuego = ?`,
             [juegoId]
         );
 
@@ -42,7 +45,10 @@ router.get('/:id', async (req, res) => {
 
     try {
         const [rows] = await pool.execute(
-            'SELECT * FROM Rating WHERE idrating = ?',
+            `SELECT r.idrating, r.valor, r.comentario, u.nombre AS usuario 
+             FROM Rating r 
+             JOIN Usuario u ON r.Usuario_idUsuario = u.idUsuario 
+             WHERE r.idrating = ?`,
             [id]
         );
 
@@ -58,3 +64,4 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
+

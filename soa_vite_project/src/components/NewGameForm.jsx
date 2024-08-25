@@ -75,7 +75,7 @@ const NewGameForm = () => {
           title: 'Registro Exitoso',
           text: data.message || 'Juego registrado exitosamente.',
         });
-        setTimeout(() => window.location.href = '/', 4000);
+        setTimeout(() => window.location.href = '/dashboardAdmin', 4000);
       } else {
         throw new Error(data.message || 'Error en el registro del juego.');
       }

@@ -52,6 +52,7 @@ const Login = () => {
     localStorage.setItem('token', data.token);
     localStorage.setItem('nickname', data.nickname);
     localStorage.setItem('rol', data.rol); // para manejo de navbar diferentes
+    localStorage.setItem('loggedUserId', data.idUsuario); 
 
 
       console.log(data.rol);

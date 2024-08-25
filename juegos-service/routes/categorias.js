@@ -26,4 +26,30 @@ router.get('/', async (req, res) => {
     }
 });
 
+// Obtener categorías de interés para un usuario específico
+router.get('/intereses/:usuarioId', async (req, res) => {
+    const { usuarioId } = req.params;
+
+    try {
+        const [rows] = await pool.execute(
+            `SELECT DISTINCT C.nombre
+             FROM Usuario U
+             JOIN JuegosUsuario JU ON U.idUsuario = JU.Usuario_idUsuario
+             JOIN Juego J ON JU.Juego_idJuego = J.idJuego
+             JOIN JuegoCategoria JC ON J.idJuego = JC.idJuego
+             JOIN Categoria C ON JC.idCategoria = C.idCategoria
+             WHERE U.idUsuario = ?`,
+            [usuarioId]
+        );
+
+        // Transformar los resultados en un array simple
+        const categoriasIntereses = rows.map(row => row.nombre);
+
+        res.status(200).json({ CategoriasIntereses: categoriasIntereses });
+    } catch (error) {
+        console.error('Error al obtener las categorías de interés:', error);
+        res.status(400).json({ message: 'Error al obtener las categorías de interés', error });
+    }
+});
+
 module.exports = router;

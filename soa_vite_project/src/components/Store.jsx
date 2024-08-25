@@ -6,6 +6,7 @@ const Store = () => {
   const [juegosFiltrados, setJuegosFiltrados] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [desarrolladores, setDesarrolladores] = useState([]);
+  const [categoriasInteres, setCategoriasInteres] = useState([]);
   const [filtro, setFiltro] = useState({
     masVendidos: false,
     desarrollador: '',
@@ -54,9 +55,22 @@ const Store = () => {
       }
     };
 
+    const fetchCategoriasInteres = async () => {
+      try {
+        const userId = localStorage.getItem('loggedUserId'); // Suponiendo que el ID de usuario está almacenado en localStorage
+        const response = await fetch(`http://localhost:3002/api/categorias/intereses/${userId}`);
+        const data = await response.json();
+        console.log("Categorías de Interés recibidas:", data.CategoriasIntereses);
+        setCategoriasInteres(data.CategoriasIntereses);
+      } catch (error) {
+        console.error('Error al cargar las categorías de interés:', error);
+      }
+    };
+
     fetchJuegos();
     fetchCategorias();
     fetchDesarrolladores();
+    fetchCategoriasInteres();
   }, []);
 
   useEffect(() => {
@@ -67,44 +81,45 @@ const Store = () => {
     let juegosFiltrados = [...juegos];
 
     if (filtro.masVendidos) {
-        juegosFiltrados.sort((a, b) => b.descargas - a.descargas);
+      juegosFiltrados.sort((a, b) => b.descargas - a.descargas);
     }
 
     if (filtro.desarrolladorSeleccionado) {
-        const desarrolladorSeleccionadoNombre = desarrolladores.find(dev => dev.idDesarrollador === parseInt(filtro.desarrolladorSeleccionado))?.nombre;
-        console.log("Aplicando filtro de desarrollador con ID:", filtro.desarrolladorSeleccionado);
-        juegosFiltrados = juegosFiltrados.filter(juego => 
-            juego.desarrolladores && 
-            juego.desarrolladores.some(d => d === desarrolladorSeleccionadoNombre)
-        );
+      const desarrolladorSeleccionadoNombre = desarrolladores.find(dev => dev.idDesarrollador === parseInt(filtro.desarrolladorSeleccionado))?.nombre;
+      juegosFiltrados = juegosFiltrados.filter(juego => 
+        juego.desarrolladores && 
+        juego.desarrolladores.some(d => d === desarrolladorSeleccionadoNombre)
+      );
     }
 
     if (filtro.categoria) {
-        const categoriaSeleccionadaNombre = categorias.find(cat => cat.idCategoria === parseInt(filtro.categoria))?.nombre;
-        console.log("Aplicando filtro de categoría con nombre:", categoriaSeleccionadaNombre);
-        juegosFiltrados = juegosFiltrados.filter(juego => 
-            juego.categorias && 
-            juego.categorias.some(c => c === categoriaSeleccionadaNombre)
-        );
+      const categoriaSeleccionadaNombre = categorias.find(cat => cat.idCategoria === parseInt(filtro.categoria))?.nombre;
+      juegosFiltrados = juegosFiltrados.filter(juego => 
+        juego.categorias && 
+        juego.categorias.some(c => c === categoriaSeleccionadaNombre)
+      );
     }
 
     if (filtro.recomendaciones) {
-        juegosFiltrados = juegosFiltrados.filter(juego => juego.recomendado);
+      juegosFiltrados = juegosFiltrados.filter(juego => 
+        juego.categorias && 
+        juego.categorias.some(c => categoriasInteres.includes(c))
+      );
     }
 
     if (filtro.calificaciones) {
-        juegosFiltrados = juegosFiltrados.filter(juego => juego.calificaciones === filtro.calificaciones);
+      juegosFiltrados = juegosFiltrados.filter(juego => juego.calificaciones === filtro.calificaciones);
     }
 
     if (filtro.clasificacion) {
-        juegosFiltrados = juegosFiltrados.filter(juego => juego.clasificacion_edad === filtro.clasificacion);
+      juegosFiltrados = juegosFiltrados.filter(juego => juego.clasificacion_edad === filtro.clasificacion);
     }
 
     if (filtro.ratingMinimo) {
-        juegosFiltrados = juegosFiltrados.filter(juego => {
-            const rating = juego.averageRating ? parseFloat(juego.averageRating) : 0;
-            return rating >= parseInt(filtro.ratingMinimo);
-        });
+      juegosFiltrados = juegosFiltrados.filter(juego => {
+        const rating = juego.averageRating ? parseFloat(juego.averageRating) : 0;
+        return rating >= parseInt(filtro.ratingMinimo);
+      });
     }
 
     setJuegosFiltrados(juegosFiltrados);
@@ -124,7 +139,7 @@ const Store = () => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
     const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-  
+
     return (
       <div className="star-rating">
         {Array(fullStars).fill(<span className="star full">★</span>)}
@@ -133,7 +148,7 @@ const Store = () => {
       </div>
     );
   };
-  
+
 
   const indexOfLastJuego = currentPage * juegosPorPagina;
   const indexOfFirstJuego = indexOfLastJuego - juegosPorPagina;
@@ -261,9 +276,6 @@ const Store = () => {
       </div>
     </div>
   );
-
-
-  
 };
 
 export default Store;
