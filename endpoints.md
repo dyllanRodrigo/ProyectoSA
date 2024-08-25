@@ -40,8 +40,11 @@ http://localhost:3002/api/categorias
 http://localhost:3002/api/ratings
 {
     "Juego_idJuego": 1,  
-    "valor": "5"
+    "Usuario_idUsuario": 1,
+    "valor": "5",
+    "comentario": "Muy bueno"
 }
+
 
 ```
 
