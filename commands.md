@@ -38,3 +38,7 @@ mysql -u root -p
 gcloud auth activate-service-account --key-file="C:\Users\DyllanJ.Rodrigo\keyGCP.json"
 
 Project ID: noble-helper-432504-b1
+
+gcloud config list
+gcloud container clusters list
+
