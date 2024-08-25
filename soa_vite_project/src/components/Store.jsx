@@ -13,7 +13,8 @@ const Store = () => {
     calificaciones: '',
     clasificacion: '',
     categoria: '',
-    desarrolladorSeleccionado: ''
+    desarrolladorSeleccionado: '',
+    ratingMinimo: '' // Nuevo filtro para el rating mínimo
   });
   const [currentPage, setCurrentPage] = useState(1);
   const juegosPorPagina = 4;
@@ -70,28 +71,20 @@ const Store = () => {
     }
 
     if (filtro.desarrolladorSeleccionado) {
-        // Encuentra el nombre del desarrollador basado en el ID seleccionado
         const desarrolladorSeleccionadoNombre = desarrolladores.find(dev => dev.idDesarrollador === parseInt(filtro.desarrolladorSeleccionado))?.nombre;
         console.log("Aplicando filtro de desarrollador con ID:", filtro.desarrolladorSeleccionado);
         juegosFiltrados = juegosFiltrados.filter(juego => 
             juego.desarrolladores && 
-            juego.desarrolladores.some(d => {
-                console.log("Comparando con desarrollador nombre:", d);
-                return d === desarrolladorSeleccionadoNombre;
-            })
+            juego.desarrolladores.some(d => d === desarrolladorSeleccionadoNombre)
         );
     }
 
     if (filtro.categoria) {
-        // Encuentra el nombre de la categoría basado en el ID seleccionado
         const categoriaSeleccionadaNombre = categorias.find(cat => cat.idCategoria === parseInt(filtro.categoria))?.nombre;
         console.log("Aplicando filtro de categoría con nombre:", categoriaSeleccionadaNombre);
         juegosFiltrados = juegosFiltrados.filter(juego => 
             juego.categorias && 
-            juego.categorias.some(c => {
-                console.log("Comparando con categoría nombre:", c);
-                return c === categoriaSeleccionadaNombre;
-            })
+            juego.categorias.some(c => c === categoriaSeleccionadaNombre)
         );
     }
 
@@ -107,9 +100,16 @@ const Store = () => {
         juegosFiltrados = juegosFiltrados.filter(juego => juego.clasificacion_edad === filtro.clasificacion);
     }
 
+    if (filtro.ratingMinimo) {
+        juegosFiltrados = juegosFiltrados.filter(juego => {
+            const rating = juego.averageRating ? parseFloat(juego.averageRating) : 0;
+            return rating >= parseInt(filtro.ratingMinimo);
+        });
+    }
+
     setJuegosFiltrados(juegosFiltrados);
     setCurrentPage(1); // Reiniciar la paginación al aplicar filtros
-};
+  };
 
 
   const handleFiltroChange = (e) => {
@@ -201,14 +201,14 @@ const Store = () => {
           </label>
         </div>
         <div className="filter-section">
-          <label>Calificaciones:</label>
-          <select name="calificaciones" value={filtro.calificaciones} onChange={handleFiltroChange}>
-            <option value="">Todas</option>
-            <option value="5">5 Estrellas</option>
-            <option value="4">4 Estrellas</option>
-            <option value="3">3 Estrellas</option>
-            <option value="2">2 Estrellas</option>
-            <option value="1">1 Estrella</option>
+          <label>Rating:</label>
+          <select name="ratingMinimo" value={filtro.ratingMinimo} onChange={handleFiltroChange}>
+            <option value="">Sin filtro</option>
+            <option value="1">1 estrella y más</option>
+            <option value="2">2 estrellas y más</option>
+            <option value="3">3 estrellas y más</option>
+            <option value="4">4 estrellas y más</option>
+            <option value="5">5 estrellas</option>
           </select>
         </div>
         <div className="filter-section">
@@ -231,7 +231,7 @@ const Store = () => {
                 <p>Desarrolladores: {(juego.desarrolladores || []).join(', ')}</p>
                 <p>Categorías: {(juego.categorias || []).join(', ')}</p>
                 <p>Clasificación: {juego.clasificacion_edad}</p>
-                <p>Calificaciones: {juego.calificaciones} Estrellas</p>
+                <p>Calificaciones: {juego.averageRating ? `${juego.averageRating} estrellas` : "Sin rating"}</p>
                 <p>Precio: ${juego.precio}</p>
                 <p>Descargas: {juego.descargas} veces</p>
                 </div>

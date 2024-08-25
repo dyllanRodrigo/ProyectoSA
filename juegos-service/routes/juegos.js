@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Obtener todos los juegos con sus categorías y desarrolladores asociados
+// Obtener todos los juegos con sus categorías, desarrolladores y ratings asociados, incluyendo el promedio de ratings
 router.get('/', async (req, res) => {
     try {
         const [juegos] = await pool.execute('SELECT * FROM Juego');
@@ -50,10 +50,23 @@ router.get('/', async (req, res) => {
                 [juego.idJuego]
             );
 
+            const [ratings] = await pool.execute(
+                'SELECT r.valor FROM Rating r ' +
+                'WHERE r.Juego_idJuego = ?',
+                [juego.idJuego]
+            );
+
+            // Calcular el promedio de ratings
+            const totalRatings = ratings.length;
+            const sumRatings = ratings.reduce((sum, r) => sum + parseFloat(r.valor), 0);
+            const averageRating = totalRatings > 0 ? (sumRatings / totalRatings).toFixed(1) : null;
+
             return {
                 ...juego,
                 categorias: categorias.map(c => c.nombre),  // Devolver solo los nombres de las categorías
-                desarrolladores: desarrolladores.map(d => d.nombre)  // Devolver solo los nombres de los desarrolladores
+                desarrolladores: desarrolladores.map(d => d.nombre),  // Devolver solo los nombres de los desarrolladores
+                ratings: ratings.map(r => r.valor),  // Devolver solo los valores de los ratings
+                averageRating: averageRating  // Incluir el promedio de ratings
             };
         }));
 
