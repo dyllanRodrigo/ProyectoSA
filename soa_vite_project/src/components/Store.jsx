@@ -120,6 +120,21 @@ const Store = () => {
     }));
   };
 
+  const StarRating = ({ rating }) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+  
+    return (
+      <div className="star-rating">
+        {Array(fullStars).fill(<span className="star full">★</span>)}
+        {halfStar && <span className="star half">★</span>}
+        {Array(emptyStars).fill(<span className="star empty">☆</span>)}
+      </div>
+    );
+  };
+  
+
   const indexOfLastJuego = currentPage * juegosPorPagina;
   const indexOfFirstJuego = indexOfLastJuego - juegosPorPagina;
   const juegosActuales = juegosFiltrados.slice(indexOfFirstJuego, indexOfLastJuego);
@@ -225,18 +240,20 @@ const Store = () => {
       <div className="game-list">
         <h2>Juegos Disponibles</h2>
         <div className="card-container">
-            {juegosActuales.map(juego => (
-                <div key={juego.idJuego} className="card">
-                <h3>{juego.nombre}</h3>
-                <p>Desarrolladores: {(juego.desarrolladores || []).join(', ')}</p>
-                <p>Categorías: {(juego.categorias || []).join(', ')}</p>
-                <p>Clasificación: {juego.clasificacion_edad}</p>
-                <p>Calificaciones: {juego.averageRating ? `${juego.averageRating} estrellas` : "Sin rating"}</p>
-                <p>Precio: ${juego.precio}</p>
-                <p>Descargas: {juego.descargas} veces</p>
-                </div>
-            ))}
+          {juegosActuales.map(juego => (
+            <div key={juego.idJuego} className="card">
+              <h3>{juego.nombre}</h3>
+              <p>Desarrolladores: {(juego.desarrolladores || []).join(', ')}</p>
+              <p>Categorías: {(juego.categorias || []).join(', ')}</p>
+              <p>Clasificación: {juego.clasificacion_edad}</p>
+              <div>
+                <StarRating rating={juego.averageRating || 0} />({juego.averageRating ? `${juego.averageRating} estrellas` : "Sin rating"})
+              </div>
+              <p>Precio: ${juego.precio}</p>
+              <p>Descargas: {juego.descargas} veces</p>
             </div>
+          ))}
+        </div>
 
         <div className="pagination">
           {renderPaginas()}
@@ -244,6 +261,9 @@ const Store = () => {
       </div>
     </div>
   );
+
+
+  
 };
 
 export default Store;
