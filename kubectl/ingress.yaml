@@ -8,24 +8,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /api/juegos
+      - path: /api/
         pathType: Prefix
         backend:
           service:
             name: juegos-service
             port:
               number: 3002
-      - path: /api/login
-        pathType: Prefix
-        backend:
-          service:
-            name: login-service
-            port:
-              number: 3003
-      - path: /api/usuarios
-        pathType: Prefix
-        backend:
-          service:
-            name: usuarios-service
-            port:
-              number: 3001
