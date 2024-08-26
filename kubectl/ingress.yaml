@@ -8,10 +8,66 @@ spec:
   rules:
   - http:
       paths:
-      - path: /api/
+      - path: /api/register
+        pathType: Prefix
+        backend:
+          service:
+            name: login-service
+            port:
+              number: 3003
+      - path: /api/confirm
+        pathType: Prefix
+        backend:
+          service:
+            name: login-service
+            port:
+              number: 3003
+      - path: /api/login
+        pathType: Prefix
+        backend:
+          service:
+            name: login-service
+            port:
+              number: 3003
+      - path: /api/juegos
         pathType: Prefix
         backend:
           service:
             name: juegos-service
             port:
               number: 3002
+      - path: /api/categorias
+        pathType: Prefix
+        backend:
+          service:
+            name: juegos-service
+            port:
+              number: 3002
+      - path: /api/desarrolladores
+        pathType: Prefix
+        backend:
+          service:
+            name: juegos-service
+            port:
+              number: 3002
+      - path: /api/ratings
+        pathType: Prefix
+        backend:
+          service:
+            name: juegos-service
+            port:
+              number: 3002
+      - path: /api/usuarios
+        pathType: Prefix
+        backend:
+          service:
+            name: usuarios-service
+            port:
+              number: 3001
+      - path: /api/descuentos
+        pathType: Prefix
+        backend:
+          service:
+            name: usuarios-service
+            port:
+              number: 3001
