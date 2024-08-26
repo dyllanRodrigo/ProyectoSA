@@ -18,7 +18,7 @@ const NewGameForm = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:3002/api/categorias');
+        const response = await fetch(`${import.meta.env.VITE_MICROSERVICIO1}/categorias`);
         const data = await response.json();
         setCategorias(data);
       } catch (error) {
@@ -29,7 +29,7 @@ const NewGameForm = () => {
 
     const fetchDesarrolladores = async () => {
       try {
-        const response = await fetch('http://localhost:3002/api/desarrolladores');
+        const response = await fetch(`${import.meta.env.VITE_MICROSERVICIO1}/desarrolladores`);
         const data = await response.json();
         setDesarrolladores(data);
       } catch (error) {
@@ -59,7 +59,7 @@ const NewGameForm = () => {
     console.log('Data being sent:', JSON.stringify(dataToSend, null, 2));
   
     try {
-      const response = await fetch('http://localhost:3002/api/juegos', {
+      const response = await fetch(`${import.meta.env.VITE_MICROSERVICIO1}/juegos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

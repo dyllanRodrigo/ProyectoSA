@@ -35,7 +35,7 @@ const Store = () => {
 
     const fetchCategorias = async () => {
       try {
-        const response = await fetch('http://localhost:3002/api/categorias');
+        const response = await fetch(`${import.meta.env.VITE_MICROSERVICIO1}/categorias`);
         const data = await response.json();
         console.log("Categorías recibidas:", data);  // Verificar datos recibidos
         setCategorias(data);
@@ -46,7 +46,7 @@ const Store = () => {
 
     const fetchDesarrolladores = async () => {
       try {
-        const response = await fetch('http://localhost:3002/api/desarrolladores');
+        const response = await fetch(`${import.meta.env.VITE_MICROSERVICIO1}/desarrolladores`);
         const data = await response.json();
         console.log("Desarrolladores recibidos:", data);  // Verificar datos recibidos
         setDesarrolladores(data);
@@ -58,7 +58,7 @@ const Store = () => {
     const fetchCategoriasInteres = async () => {
       try {
         const userId = localStorage.getItem('loggedUserId'); // Suponiendo que el ID de usuario está almacenado en localStorage
-        const response = await fetch(`http://localhost:3002/api/categorias/intereses/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_MICROSERVICIO1}/categorias/intereses/${userId}`);
         const data = await response.json();
         console.log("Categorías de Interés recibidas:", data.CategoriasIntereses);
         setCategoriasInteres(data.CategoriasIntereses);
